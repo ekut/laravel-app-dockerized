@@ -23,13 +23,15 @@ services:
       - "3316:3306"
     env_file:
       - env/mysql.env
+    volumes:
+      - db_data:/var/lib/mysql
 
   composer:
     build:
       context: dockerfiles
       dockerfile: composer.Dockerfile
     volumes:
-      - ./src:/var/www/laravel
+      - db_data:/var/www/laravel
   artisan:
     build:
       context: dockerfiles
@@ -37,3 +39,6 @@ services:
     volumes:
       - ./src:/var/www/laravel
     entrypoint: ["php", "/var/www/laravel/artisan"]
+
+volumes:
+  db_data:
